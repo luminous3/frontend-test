@@ -1,0 +1,26 @@
+.details {
+  border-top: 1px solid var(--mercury);
+  border-bottom: 1px solid var(--mercury);
+  padding: var(--large-padding);
+}
+
+.row1 {
+  display: flex;
+  margin-bottom: var(--large-padding);
+}
+
+.map {
+  flex-grow: 2;
+  height: 250px;
+  position: relative;
+  margin-right: var(--large-padding);
+}
+
+.imageOne {
+  flex-grow: 1;
+  margin-right: var(--large-padding);
+}
+
+.imageTwo {
+  flex-grow: 1;
+}

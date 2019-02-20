@@ -1,0 +1,42 @@
+.reviewsContainer {
+  padding: var(--large-padding);
+}
+
+.reviewContainer {
+  display: flex;
+  padding-top: var(--large-padding);
+  padding-bottom: var(--large-padding);
+  border-bottom: 1px solid var(--mercury);
+}
+
+.emphasize {
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: lighter;
+}
+
+.emphasizeSmall {
+  position: relative;
+  top: -10px;
+  font-size: 16px;
+  line-height: 32px;
+  font-weight: lighter;
+}
+
+.user {
+  flex: 1;
+  display: flex;
+}
+
+.userInfo {
+  padding-left: var(--medium-padding)
+}
+
+.avatar {
+  height: 80px;
+  width: 80px;
+}
+
+.reviewText {
+  flex: 2;
+}

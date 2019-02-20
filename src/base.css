@@ -1,0 +1,53 @@
+/* Color Variables */
+
+:root {
+  --mercury: #E6E6E6;
+  --boulder: #757575;
+  --green: #00E8A4;
+  --red: #FF3548;
+  --blue: #002B56;
+  --white: #fff;
+}
+
+/* Spacing Variables */
+
+:root {
+  --large-padding: 20px;
+  --medium-padding: 10px;
+  --small-padding: 5px;
+}
+
+/* Base */
+
+html * {
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+h1 {
+  font-size: 54px;
+  font-weight: lighter;
+  padding-bottom: var(--large-padding)
+}
+
+h2 {
+  font-size: 34px;
+  font-weight: lighter;
+  padding-bottom: var(--large-padding)
+}
+
+h3 {
+  font-size: 22px;
+  line-height: 28px;
+  margin-bottom: var(--medium-padding);
+}
+
+p {
+  font-size: 16px;
+  line-height: 28px;
+}
+
+span {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--boulder);
+}

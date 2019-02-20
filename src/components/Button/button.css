@@ -1,0 +1,23 @@
+.button {
+  border-radius: 1px;
+  border-color: var(--blue);
+  padding-top: var(--medium-padding);
+  padding-bottom: var(--medium-padding);
+  color: var(--blue);
+}
+
+.button:hover {
+  cursor: pointer;
+  color: var(--white);
+  background-color: var(--blue);
+}
+
+.filled {
+  color: var(--white);
+  background-color: var(--blue);
+}
+
+.filled:hover {
+  color: var(--blue);
+  background-color: var(--white);
+}

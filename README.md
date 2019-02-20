@@ -1,98 +1,175 @@
 # Superformula Front-end Developer Coding Test
 
-Be sure to read **all** of this document carefully, and follow the guidelines within.
 
-## Context
+## Demo
 
-Use HTML, CSS, and JavaScript to implement the following mock-up. You will need to leverage an open API for restaurant data to fill in the details and functionality as described below. You are only required to complete the desktop views, unless otherwise instructed.
+### Screenshots
 
-![Superformula-front-end-test-mockup](./mockup.png)
+#### Main Page
+![](https://i.ibb.co/XzzXMsy/Screen-Shot-2019-02-19-at-5-50-01-PM.png)
+#### Drop Down No Hover
+![](https://i.ibb.co/j3Rqdb4/Screen-Shot-2019-02-19-at-5-50-31-PM.png)
+#### Drop Down Hover Non-selected
+![](https://i.ibb.co/2qwCNjt/Screen-Shot-2019-02-19-at-6-14-09-PM.png)
+#### Drop Down Hover selected
+![](https://i.ibb.co/C9cRVYD/Screen-Shot-2019-02-19-at-6-14-16-PM.png)
+#### Loading Animation
+![](https://media.giphy.com/media/6AbgFJOEdkRKtkzs6h/giphy.gif)
+#### Filled Button (Empties on Hover)
+![](https://media.giphy.com/media/QKBkso6gkSadpUT6bJ/giphy.gif)
+#### Empty Button (Fills on Hover)
+![](https://media.giphy.com/media/bbJraWrZ4fHQrW1CZx/giphy.gif)
+#### Detail View
+![](https://i.ibb.co/6WY2qFh/Screen-Shot-2019-02-19-at-6-46-55-PM.png)
 
-Use this Sketch file to see button states, colors, and responsive design.
+### Video
+[Here is a link to a video exploring the site](https://streamable.com/s/341d1/haserc)
 
-> [Source Sketch file](Superformula-FE-test-264388d.sketch)
 
-## Requirements
+## Notable Items
 
-### Yelp API
+#### withContextState
+I didn't want to use redux because it would have been overkill for an application like this. Beyond that, I always like to experiment a little in these coding challenges and I've been wanted to play more with reacts new context API. So I created a simple data management solution around React context that's inspired by redux. The idea is that it will give you access to getters and setters for a global store without having to do the boiler plate that comes with more complex options.
 
-You can ask us and we will provide you a Yelp API Key to use for your PR.
+To start you create a store at the root of your application passing in any default you wish:
+```js
+import { withStateContext } from 'contextState'
 
-> NOTE: Yelp's API does not allow CORS. To get around this, you will need to setup a local proxy with CORS support and proxy your requets to Yelp's endpoints.
-
-### Page Structure
-
-```
-Main
-  - Filter navigation
-    - Open now (client side filter)
-    - Price (client side filter)
-    - Categories/Cuisines (server side search filter)
-  - Section
-    - Restaurant item
-      - Image (use first item in `photos`)
-      - Cuisine / Categories (use first item in `categories`)
-      - Rating
-      - Price range
-      - Open / Closed
-      - Restaurant name
-      - Learn more (open modal to show more details)
-Detail View
-  - Restaurant Name & Rating
-  - Map (optional, if time allows)
-  - Section
-    - Review item
-      - Image
-      - Name
-      - Rating
-      - Text
+@withStateContext({
+  thisIsAnExampleOfDefaultData: true
+})
+class App extends Component {
+  ...
+}
 ```
 
-### Functionality
+Then at any point in the application you can connect to that global state:
+```js
+import { connectState } from 'contextState'
 
-- The filter navigation needs to be able to perform real time filtering on both client side data, as well as server side queries.
-- Yelp's `/businesses/search` endpoint requires a `location`, please use `Las Vegas`
-- `Categories` can be pre-filled from the [Categories endpoint](https://www.yelp.com/developers/documentation/v3/all_categories)
-- The items should always show 4-6 items per row depending on viewport size. Use your own judgement for when to change per breakpoints.
-- Please see the [Yelp documentation](https://www.yelp.com/developers/documentation/v3) for more details.
+@connectState()
+class Example extends Component {
+  ...
+}
+```
 
-### Tech stack
+This will give you the `setContextState` function. This is going to be the setter for your data:
 
-- JS oriented
-  - Use **React**.
-  - _Do not_ use any React boilerplate, such as Create React App
-- Feel free to use a preprocessor like SASS/SCSS/Less but _do not_ use any CSS frameworks or libraries.
+```js
+setContextState({ businesses: {...} })
+```
 
-### Bonus
+The `connectState` also takes an argument that lets you select the data you would like from the store and will pass it down as a prop under of the same name:
+```js
+import { connectState } from 'contextState'
 
-- Also create mobile version included in Sketch comp.
-- Write clear **documentation** on how the app was designed and how to run the code.
-- Provide proper unit tests.
-- Provide components in [Storybook](https://storybook.js.org) with tests.
-- Use Yelp's [Graph QL](https://www.yelp.com/developers/graphql/guides/intro) endpoint
-- Write concise and clear commit messages.
-- Provide an online demo of the application.
-- Include subtle animations to focus attention
-- Describe optimization opportunities when you conclude
+@connectState('businesses')
+class Example extends Component {
+  ...
+  render() {
+    this.props.businesses
+    ...
+  }
+}
+```
+If the data is stored multiple levels deep or you would like to rename the prop you can pass in a getter as the second argument. It receives state and props and resolves to the object you are looking for:
+```js
+import { connectState } from 'contextState'
 
-## What We Care About
+@connectState(
+  'business',
+  (state, props) => get(state, `businesses.${props.id}`)
+)
+class Example extends Component {
+  ...
+  render() {
+    this.props.business
+    ...
+  }
+}
+```
+#### withLoading
+A decorator that takes in a loading component and if the prop `loading: true` is passed into the component it will render the loading component instead.
+```js
+import withLoading from 'decorators/withLoading';
+import LoadingComponent from './Example.loading.js'
 
-Use any libraries that you would normally use if this were a real production App. Please note: we're interested in your code & the way you solve the problem, not how well you can use a particular library or feature.
+@withLoading(LoadingComponent)
+class Example extends Component {
+  ...
+}
 
-_We're interested in your method and how you approach the problem just as much as we're interested in the end result._
+<Example loading /> // Will render LoadingComponent
+<Example loading={false} /> // Will render Example
+```
 
-Here's what you should strive for:
+With this I was able to implement some nice loading animations.
 
-- Good use of current HTML, CSS, and JavaScript & performance best practices.
-- Solid testing approach.
-- Extensible code.
+#### Folder Structure
 
-## Q&A
+There are 4 main section of my file structure:
 
-> Where should I send back the result when I'm done?
+* **components** - The general component library. There are specific component sections that we will talk about later but this folder has components that will be used across the application.
+* **decorators** - general HOCs to enhance the functionality of components
+* **modules** - interaction with external apis
+* **routes** - Main code for the application
 
-Fork this repo and send us a pull request when you think you are done. There is no deadline for this task unless otherwise noted to you directly.
+I chose to use a recursive pod structure inside the routes folder. Every level will have the same files:  
 
-> What if I have a question?
+```
 
-Just create a new issue in this repo and we will respond and get back to you quickly.
+routes
+ |-> Comp1/
+ |    |-> components/
+ |    |    |-> ChildComp/
+ |    |    |    |-> components/ ...
+ |    |    |    |-> index.js
+ |    |    |    |-> childComp.css
+ |    |->index.js
+ |    |->comp1.css
+ |    |->comp1.test.js // When tests are added
+ |    |->comp1.loader.js // see withLoader below
+```
+I find this structure easier as the application grows because you are able to easily access everything you need without having to jump all over the code base.
+
+#### CSS modules
+
+I opted for css modules and native css variables to reduce naming conflict and keep all css living in the pod structure.
+
+#### CSS grids
+
+For the main list grid I used css grid to make that layout simpler. This will be very help for future extensions into the mobile layout because css grids all for huge layout shifts on different screen sizes.
+
+## Future Extensions
+
+### Testing
+
+There are no tests and I would like to add a testing framework for unit tests. Especially for the global components in the top level `components` directory. I really enjoy Jest and would opt for that as the my test runner.
+
+### Optimization
+
+Currently I used Pure and Functional components as much as possible but added memoization onto selectors is always a great way to make sure future developers are accessing data correctly. In my experience accessing data is the biggest hole for performance leaks to creep in.  
+
+### Storybook
+
+I would love to add storybook to this to have documentation growing with the application. Especially early on it's very nice to get that in so we are not trying to play catch-up later on and potentially duplicating engineering efforts because of lack of transparency.
+
+### Split Repo
+
+I would pull out the entire component folder into it's own repo and publish it under an npm package. In doing that we can develop it independent of the application itself, use it across project for consistency, and have greater control over component versioning.
+
+### State Management
+
+I would either need to continue to formalize the state context concept or switch over to a more structure data management layer if we were going to continue to grow this application.  
+
+### Mobile Support
+
+I made the website responsive to different web screens but didn't implement the mobile layout. If I had more time I would have leveraged css grid and created a breakpoint as part of the base design system in order to develop the mobile designs.
+
+### Proptypes
+
+I want to add in prop typing for all the components to add a layer of protection and self documentation.  
+
+### Loading Animation Development
+
+I added a loading animation for the main page as an example but I would love to continue to build out loading animations for a lot more components. This will make the page feel a lot more complete and lower the perceived time to first interaction.

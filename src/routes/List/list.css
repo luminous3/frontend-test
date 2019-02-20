@@ -1,0 +1,24 @@
+.listContainer {
+  padding: var(--large-padding);
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: var(--large-padding);
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  width: 40vw;
+}
+
+.emphasize {
+  font-size: 22px;
+  line-height: 32px;
+  font-weight: lighter;
+}

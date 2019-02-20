@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  align-items: center;
+  padding: var(--small-padding) var(--medium-padding);
+}
+
+.container:hover {
+  color: white;
+  background-color: var(--blue);
+  cursor: pointer;
+}
+
+.container p {
+  padding-left: var(--medium-padding);
+}

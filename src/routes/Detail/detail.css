@@ -1,0 +1,20 @@
+.meta {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dotRed {
+  color: var(--red);
+  padding-right: var(--small-padding)
+}
+
+.dotGreen {
+  color: var(--green);
+  padding-right: var(--small-padding)
+}
+
+.emphasize {
+  font-size: 22px;
+  line-height: 32px;
+  font-weight: lighter;
+}

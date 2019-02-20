@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--large-padding);
+  border-top: 1px solid var(--mercury);
+  border-bottom: 1px solid var(--mercury);
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+}
+
+.filters > * {
+  margin-right: var(--large-padding);
+}
